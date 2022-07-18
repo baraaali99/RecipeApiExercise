@@ -4,6 +4,7 @@ namespace RecipeConsole.Client;
 
 internal class ConsoleUi
 {
+
     public static Recipe AddRecipe(List<string> categoryList)
     {
         Recipe recipe = new Recipe();
@@ -156,13 +157,9 @@ internal class ConsoleUi
     {
         AnsiConsole.MarkupLine("Enter all the [green]categories[/]. [red] after you're done of writing categories press space to move to next step [/]");
         string category = AnsiConsole.Ask<string>("What is the [green]category[/] called?");
-        while (category != "")
-        {
-            category = AnsiConsole.Prompt(new TextPrompt<string>("Enter more [green]categories[/]: ").AllowEmpty());
-        };
         return category;
     }
-    public static List<string> ChooseCategories(List<string> categoriesList) //this one used when we're creating a recipe so we add a category to it
+    public static List<string> ChooseCategories(List<string> categoriesList)
     {
         if (categoriesList.Count == 0)
         {

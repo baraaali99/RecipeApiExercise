@@ -2,6 +2,7 @@
 using System.Net.Http.Headers;
 using RecipeConsole.Client;
 using System.Net.Http.Json;
+using Microsoft.Extensions.Configuration;
 
 HttpClient client = new HttpClient();
 client.BaseAddress = new Uri("https://localhost:7266/");
@@ -75,7 +76,7 @@ while (true)
 
 async Task<List<Recipe>> ListRecipesAsync()
 {
-	var recipeList = await client.GetFromJsonAsync<List<Recipe>>("Recipes");
+	var recipeList = await client.GetFromJsonAsync<List<Recipe>>("recipes");
 	if (recipeList != null)
 		return recipeList;
 	return new List<Recipe>();
@@ -109,7 +110,7 @@ async Task PutRecipeAsync(Recipe recipe)
 
 async Task PostCategoryAsync(string category)
 {
-	await client.PostAsJsonAsync("categories", category);
+	var result = await client.PostAsJsonAsync("Category", category);
 }
 
 async Task DeleteCategoriesAsync(List<string> categoriesList)

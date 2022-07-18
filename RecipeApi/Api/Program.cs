@@ -21,7 +21,7 @@ if (app.Environment.IsDevelopment())
 var recipesList = new List<Recipe>();
 var categoriesList = new List<string>();
 var jsonPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-string jsonFile = Path.Combine(jsonPath, "Recipes.json");
+string jsonFile = Path.Combine(jsonPath, "RecipesInfo.json");
 
 using (StreamReader r = new StreamReader(jsonFile))
 {
@@ -32,8 +32,6 @@ using (StreamReader r = new StreamReader(jsonFile))
 		recipesList = Json;
 	}
 }
-
-app.MapGet("/", () => "welcome");
 
 app.MapGet("/recipes", () =>
 {

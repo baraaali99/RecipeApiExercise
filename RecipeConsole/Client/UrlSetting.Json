@@ -1,0 +1,9 @@
+{
+	"BaseUrl": "https://localhost:7266/",
+	"Logging": {
+		"LogLevel": {
+			"Default": "Information",
+			"Microsoft.AspNetCore": "Warning"
+		}
+	}
+}
