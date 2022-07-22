@@ -1,18 +1,17 @@
 ﻿using System.Text;
 using Spectre.Console;
-namespace RecipeConsole.Client;
-
+using RecipeConsole.Client;
 internal class ConsoleUi
 {
-
-    public static Recipe AddRecipe(List<string> categoryList)
+    static List<string> categoryList = new List<string>();
+    public static Recipe AddRecipe(List<string> catList)
     {
+        catList = categoryList;
         Recipe recipe = new Recipe();
         var title = AnsiConsole.Ask<string>("What is the [green]recipe[/] called?");
         recipe.Title = title;
         var ingredients = new List<string>();
         var instructions = new List<string>();
-        var categoriesList = new List<string>();
 
         AnsiConsole.MarkupLine("Enter all the [green]ingredients[/]. [red] after you're done of writing instructions press space to move to next step [/]");
         var ingredient = AnsiConsole.Ask<string>("Enter recipe ingredient: ");
@@ -31,7 +30,7 @@ internal class ConsoleUi
 
         };
 
-        if (categoriesList.Count == 0)
+        if (categoryList.Count == 0)
         {
             AnsiConsole.MarkupLine("[red]Threr are no categories so please add Categories your recipes can belong to[/]");
             recipe.Categories.Add("[red]not assigned to specific Category yet[/]");// here the recipe the user added won't belong to any category
@@ -39,13 +38,13 @@ internal class ConsoleUi
         }
         else
         {
-            var selectedcategories = AnsiConsole.Prompt(
+        var selectedcategories = AnsiConsole.Prompt(
         new MultiSelectionPrompt<String>()
         .PageSize(10)
         .Title(" Which [white]categories[/] does this recipe belong to?")
         .MoreChoicesText("[grey](Move up and down to reveal more categories)[/]")
         .InstructionsText("[grey](Press [blue]Space[/] to toggle a category, [green]Enter[/] to accept)[/]")
-        .AddChoices(categoriesList));
+        .AddChoices(categoryList));
 
             recipe.Categories = selectedcategories;
             return recipe;
@@ -91,6 +90,7 @@ internal class ConsoleUi
     }
     public static Recipe EditRecipe(List<Recipe> recipesList, List<string> categoriesList)
     {
+        categoriesList = categoryList;
         if (recipesList.Count == 0)
         {
             AnsiConsole.MarkupLine("[red]There are no recipes to [/]");
@@ -146,21 +146,23 @@ internal class ConsoleUi
                 .Title("Which [green]category[/] does this recipe belong to?")
                 .MoreChoicesText("[grey](Move up and down to reveal more categories)[/]")
                 .InstructionsText("[grey](Press [blue]Space[/] to toggle a category, [green]Enter[/] to choose the category you toggeled)[/]")
-                .AddChoices(categoriesList));
+                .AddChoices(categoryList));
 
                 chosenRecipe.Categories = selectedcategories;
                 break;
         }
         return chosenRecipe;
     }
-    public string AddCategory()
+    public static string AddCategory()
     {
         AnsiConsole.MarkupLine("Enter all the [green]categories[/]. [red] after you're done of writing categories press space to move to next step [/]");
-        string category = AnsiConsole.Ask<string>("What is the [green]category[/] called?");
+        string category =  AnsiConsole.Ask<string>("What is the [green]category[/] called?");
+        categoryList.Add(category);
         return category;
     }
     public static List<string> ChooseCategories(List<string> categoriesList)
     {
+        categoriesList = categoryList;
         if (categoriesList.Count == 0)
         {
             AnsiConsole.MarkupLine("[red]Threr are no categories so please add Categories your recipes can belong to[/]");
@@ -178,6 +180,7 @@ internal class ConsoleUi
     }
     public static string EditCategory(List<Recipe> recipesList, List<string> categoriesList)
     {
+        categoriesList = categoryList;
         if (categoriesList.Count == 0)
         {
             AnsiConsole.MarkupLine("[red]There are no Categories to be edited[/]");

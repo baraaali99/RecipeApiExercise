@@ -16,7 +16,6 @@ namespace RecipeConsole.Client
         public Recipe(string title, List<string> ingredients, List<string> instructions, List<string> categories, Guid id)
         {
             Title = title;
-
             Ingredients = ingredients;
             Instructions = instructions;
             Categories = categories;
@@ -30,7 +29,6 @@ namespace RecipeConsole.Client
             Categories = new List<string>();
             Ingredients = new List<string>();
             Id = Guid.NewGuid();
-
         }
     }
 }

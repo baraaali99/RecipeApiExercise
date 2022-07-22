@@ -3,9 +3,21 @@ using System.Net.Http.Headers;
 using RecipeConsole.Client;
 using System.Net.Http.Json;
 using Microsoft.Extensions.Configuration;
+using System.Text.Json;
+using Spectre.Console;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
+IConfiguration config = new ConfigurationBuilder()
+	.AddJsonFile("appSettings.json")
+	.AddEnvironmentVariables()
+	.Build();
+var url = config.GetRequiredSection("BaseUrl").Get<string>();
+
+//Create HttpClient and add base address
 HttpClient client = new HttpClient();
-client.BaseAddress = new Uri("https://localhost:7266/");
+client.BaseAddress = new Uri(url);
+
 client.DefaultRequestHeaders.Accept.Clear();
 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -110,14 +122,14 @@ async Task PutRecipeAsync(Recipe recipe)
 
 async Task PostCategoryAsync(string category)
 {
-	var result = await client.PostAsJsonAsync("Category", category);
+	var result = await client.PostAsJsonAsync("category", category, new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 }
 
 async Task DeleteCategoriesAsync(List<string> categoriesList)
 {
 	var deleteTasks = new List<Task>();
 	foreach (var category in categoriesList)
-		deleteTasks.Add(client.DeleteAsync("categories?category=" + category));
+		deleteTasks.Add(client.DeleteAsync("category?category=" + category));
 	await Task.WhenAll(deleteTasks);
 }
 
